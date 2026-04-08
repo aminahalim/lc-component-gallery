@@ -63,7 +63,6 @@ const tocSections = [
   ]},
   { id: 'composites', label: 'LC Composites', children: [
     { id: 'composite-compass-ai', label: 'Compass AI' },
-    { id: 'composite-home', label: 'Home Dashboard' },
     { id: 'composite-modals', label: 'Modals' },
   ]},
   { id: 'shadcn', label: 'shadcn Components', children: [
@@ -161,7 +160,6 @@ const sideNavProducts = [
 export default function ComponentGallery() {
   const [exploreOpen, setExploreOpen] = useState(false)
   const [widgetOpen, setWidgetOpen] = useState(false)
-  const [activeProduct, setActiveProduct] = useState('home')
   const [activeSection, setActiveSection] = useState('foundations')
   const mainRef = useRef<HTMLDivElement>(null)
 
@@ -816,34 +814,6 @@ export default function ComponentGallery() {
           <div className="sticky bottom-0 bg-white border-t border-[#e5e7eb] px-6 py-4">
             <div className="max-w-2xl mx-auto"><PromptInput placeholder="Ask a follow-up question..." /></div>
           </div>
-        </div>
-      </div>
-    </Section>
-  </div>
-
-  {/* Home Dashboard */}
-  <div id="composite-home" style={{ scrollMarginTop: 24 }} className="space-y-6">
-    <h3 className="text-lg font-semibold text-[#393839]">Home Dashboard</h3>
-    <Section id="composite-home-dashboard" title="Full Page Composition" description="AppHeader + SideNavigation + PageHeader + WidgetCards assembled together.">
-      <div className="flex flex-col h-[620px]">
-        <AppHeader variant="authenticated" />
-        <div className="flex flex-1 overflow-hidden">
-          <SideNavigation products={sideNavProducts} activeProductId={activeProduct} onProductClick={setActiveProduct} />
-          <main className="flex-1 overflow-y-auto bg-[#f8faff]">
-            <PageHeader title="Home" onPrintClick={() => {}} />
-            <div className="p-6 space-y-6">
-              <div>
-                <h3 className="text-base font-semibold text-[#393839]">FWP</h3>
-                <p className="text-xs text-[#6b7280]">Memorial Health System</p>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-3">
-                  <WidgetCard icon="job-orders" title="Job Orders" metrics={[{ label: 'Order Approvals', value: 2 }, { label: 'Submissions for Review', value: 12 }, { label: 'Assignments Ending', value: 12 }]} />
-                  <WidgetCard icon="staff-pool" title="Staff Pool" metrics={[{ label: 'Agreements Pending', value: 3 }, { label: 'Credential Steps Pending', value: 3 }, { label: 'Expiring Documents', value: 0 }]} />
-                  <WidgetCard icon="timecards" title="Timecards" metrics={[{ label: 'Time Approvals', value: 2 }, { label: 'Time Segment Disputed', value: 1 }]} />
-                  <WidgetCard icon="invoices" title="Invoices" metrics={[{ label: 'Invoice Approvals', value: 2 }, { label: 'Invoice Pending Payment', value: 2 }]} />
-                </div>
-              </div>
-            </div>
-          </main>
         </div>
       </div>
     </Section>

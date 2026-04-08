@@ -1,46 +1,33 @@
 /**
  * FilterBar
  *
- * Horizontal bar with filter button, count badge, tab toggles, and action buttons.
+ * Horizontal bar with filter button (with count badge) and category labels with counts.
+ * The category labels (e.g. "Jobs 20,000", "Applications 80,000") are static text, not toggles.
  * Used across Candidates, Job Orders, Staff Pool, Timecards, Invoices pages.
  *
  * Custom LiquidCompass component — NOT shadcn.
  */
 import { SlidersHorizontal } from 'lucide-react'
 
-export interface FilterTab {
+export interface FilterCategory {
   id: string
   label: string
   count?: number
-  isActive?: boolean
-}
-
-export interface FilterBarAction {
-  id: string
-  label: string
-  icon?: React.ReactNode
-  onClick: () => void
 }
 
 export interface FilterBarProps {
   filterCount?: number
-  tabs?: FilterTab[]
-  actions?: FilterBarAction[]
+  categories?: FilterCategory[]
   onFilterClick?: () => void
-  onTabClick?: (tabId: string) => void
-  resultCount?: string
 }
 
 export function FilterBar({
   filterCount = 1,
-  tabs,
-  actions,
+  categories,
   onFilterClick,
-  onTabClick,
-  resultCount,
 }: FilterBarProps) {
   return (
-    <div className="flex items-center gap-4 py-2 flex-wrap">
+    <div className="flex items-center gap-4 py-2">
       {/* Filter button */}
       <button
         onClick={onFilterClick}
@@ -55,47 +42,23 @@ export function FilterBar({
         )}
       </button>
 
-      {/* Tabs */}
-      {tabs && tabs.length > 0 && (
-        <div className="flex items-center gap-0.5">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => onTabClick?.(tab.id)}
-              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
-                tab.isActive
-                  ? 'bg-[#1e293b] text-white'
-                  : 'text-[#393839] hover:bg-[#f3f4f6]'
-              }`}
-            >
-              {tab.label}
-              {tab.count !== undefined && (
-                <span className={`ml-1.5 text-xs ${tab.isActive ? 'text-white/70' : 'text-[#9ca3af]'}`}>
-                  {tab.count.toLocaleString()}
+      {/* Separator */}
+      {categories && categories.length > 0 && (
+        <div className="w-px h-5 bg-[#e5e7eb]" />
+      )}
+
+      {/* Category labels with counts */}
+      {categories && categories.length > 0 && (
+        <div className="flex items-center gap-4">
+          {categories.map((cat) => (
+            <div key={cat.id} className="flex items-center gap-2">
+              <span className="text-sm font-semibold text-[#1e293b]">{cat.label}</span>
+              {cat.count !== undefined && (
+                <span className="text-xs text-[#9ca3af] font-medium">
+                  {cat.count.toLocaleString()}
                 </span>
               )}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Result count */}
-      {resultCount && (
-        <span className="text-sm text-[#6b7280]">{resultCount}</span>
-      )}
-
-      {/* Action buttons */}
-      {actions && actions.length > 0 && (
-        <div className="flex items-center gap-2 ml-auto">
-          {actions.map((action) => (
-            <button
-              key={action.id}
-              onClick={action.onClick}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-[#393839] hover:bg-[#f3f4f6] rounded-md transition-colors"
-            >
-              {action.icon}
-              {action.label}
-            </button>
+            </div>
           ))}
         </div>
       )}

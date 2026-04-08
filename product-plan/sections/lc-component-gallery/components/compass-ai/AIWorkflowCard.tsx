@@ -83,7 +83,7 @@ export function AIWorkflowCard({
                 className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
                 style={{ backgroundColor: `${option.iconColor}15` }}
               >
-                <Icon className="w-5 h-5" style={{ color: option.iconColor }} strokeWidth={1.5} />
+                <Icon className={`w-5 h-5`} strokeWidth={1.5} />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-[#1e293b]">{option.title}</p>

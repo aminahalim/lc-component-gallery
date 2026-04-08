@@ -161,6 +161,7 @@ export default function ComponentGallery() {
   const [exploreOpen, setExploreOpen] = useState(false)
   const [widgetOpen, setWidgetOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('foundations')
+  const [sideNavActive, setSideNavActive] = useState('compass-ai')
   const mainRef = useRef<HTMLDivElement>(null)
 
   // Track active section via IntersectionObserver
@@ -482,26 +483,35 @@ export default function ComponentGallery() {
   </Section>
 
   {/* Side Nav */}
-  <Section id="comp-sidenav" title="Side Nav" description="6 variants per product. Active product gets blue left border; products with sub-items expand.">
-    <div className="flex gap-4 p-4 bg-white overflow-x-auto">
-      {[
-        { active: 'compass-ai', label: 'Compass AI', extra: { subItems: [{ id: 'new', icon: 'pencil' }, { id: 'history', icon: 'history' }] } },
-        { active: 'home', label: 'Home' },
-        { active: 'talent', label: 'Talent', extra: { subItems: [{ id: 'sp', icon: 'staff-pool' }, { id: 'jo', icon: 'job-orders' }, { id: 'rpt', icon: 'reports' }] } },
-        { active: 'fwp', label: 'FWP', extra: { subItems: [{ id: 'jo', icon: 'job-orders' }, { id: 'sp', icon: 'staff-pool' }, { id: 'tc', icon: 'timecards' }, { id: 'inv', icon: 'invoices' }, { id: 'rpt', icon: 'reports' }] } },
-        { active: 'mc', label: 'MC' },
-        { active: 'messages', label: 'Messages' },
-      ].map(({ active, label, extra }) => (
-        <div key={active} className="shrink-0">
-          <p className="text-xs text-[#9ca3af] mb-1.5 font-medium uppercase tracking-wide text-center">{label}</p>
-          <div className="h-[520px] border border-[#e5e7eb] rounded-lg overflow-hidden">
-            <SideNavigation
-              products={sideNavProducts.map(p => p.id === active && extra ? { ...p, ...extra } : p)}
-              activeProductId={active}
-            />
-          </div>
+  <Section id="comp-sidenav" title="Side Nav" description="Click any product to see it become active. Products with sub-items (Compass AI, Talent, FWP) expand when active.">
+    <div className="p-4 bg-white">
+      <p className="text-xs text-[#9ca3af] mb-3 font-medium">Click a product below to toggle active state and see sub-items expand/collapse:</p>
+      <div className="flex gap-6">
+        {/* Interactive sidebar */}
+        <div className="border border-[#e5e7eb] rounded-lg overflow-hidden">
+          <SideNavigation
+            products={[
+              { id: 'compass-ai', label: 'Compass\nAI', icon: 'compass-ai' as const, subItems: [{ id: 'new', icon: 'pencil' }, { id: 'history', icon: 'history' }] },
+              { id: 'home', label: 'Home', icon: 'home' as const },
+              { id: 'talent', label: 'Talent', icon: 'talent' as const, subItems: [{ id: 'sp', icon: 'staff-pool' }, { id: 'jo', icon: 'job-orders' }, { id: 'rpt', icon: 'reports' }] },
+              { id: 'fwp', label: 'FWP', icon: 'fwp' as const, subItems: [{ id: 'jo', icon: 'job-orders' }, { id: 'sp', icon: 'staff-pool' }, { id: 'tc', icon: 'timecards' }, { id: 'inv', icon: 'invoices' }, { id: 'rpt', icon: 'reports' }] },
+              { id: 'mc', label: 'MC', icon: 'mc' as const },
+              { id: 'messages', label: 'Messages', icon: 'messages' as const },
+            ]}
+            activeProductId={sideNavActive}
+            onProductClick={setSideNavActive}
+          />
         </div>
-      ))}
+        {/* State label */}
+        <div className="flex flex-col justify-center">
+          <p className="text-sm text-[#393839]">Active: <span className="font-semibold text-[#2876d3]">{sideNavActive}</span></p>
+          <p className="text-xs text-[#9ca3af] mt-1">
+            {['compass-ai', 'talent', 'fwp'].includes(sideNavActive)
+              ? 'Sub-items expanded'
+              : 'No sub-items for this product'}
+          </p>
+        </div>
+      </div>
     </div>
   </Section>
 
@@ -580,23 +590,31 @@ export default function ComponentGallery() {
   </Section>
 
   {/* Conversation List Item */}
-  <Section id="comp-listitem" title="Conversation List Item" description="Selected and unselected states for the chat history sidebar.">
-    <div className="p-6 bg-white space-y-2 max-w-[300px]">
-      <div className="px-4 py-3 bg-white border border-[#e5e7eb] rounded-lg">
-        <div className="flex items-center justify-between mb-1">
-          <p className="text-sm font-semibold text-[#1e293b] truncate">ICU night shift fill rate</p>
-          <span className="text-[10px] text-[#9ca3af] shrink-0 ml-2">1 week ago</span>
+  <Section id="comp-listitem" title="Conversation List Item" description="Unselected and selected states for the chat history sidebar. Selected has a right blue border.">
+    <div className="p-6 bg-white flex gap-6">
+      {/* Unselected */}
+      <div className="w-[322px] shrink-0">
+        <p className="text-[10px] font-bold uppercase tracking-wider text-[#9ca3af] mb-2">Unselected</p>
+        <div className="border-b border-[#e4e4e7] px-4 pt-4 pb-4 flex flex-col gap-2">
+          <p className="text-[17px] font-medium text-[#101828] truncate leading-[27px]">ICU night shift fill rate analysis</p>
+          <p className="text-[15px] text-[#4a5565] leading-[27px]">Based on the data, ICU night shifts have a 68% fill rate...</p>
+          <div className="flex items-center justify-between">
+            <span className="px-2 h-[26px] flex items-center justify-center bg-[#fef6e6] rounded text-[13px] font-bold text-[#f5a505]">MC</span>
+            <span className="text-[13px] font-medium text-[#71717a]">1 week ago</span>
+          </div>
         </div>
-        <p className="text-xs text-[#6b7280] truncate">Based on the data, ICU night shifts have a 68% fill rate...</p>
-        <div className="mt-2"><Pill color="#7c3aed">MC</Pill></div>
       </div>
-      <div className="px-4 py-3 bg-[#f0f7ff] border border-[#2876d3]/20 rounded-lg">
-        <div className="flex items-center justify-between mb-1">
-          <p className="text-sm font-semibold text-[#1e293b] truncate">ICU night shift fill rate</p>
-          <span className="text-[10px] text-[#9ca3af] shrink-0 ml-2">1 week ago</span>
+      {/* Selected */}
+      <div className="w-[322px] shrink-0">
+        <p className="text-[10px] font-bold uppercase tracking-wider text-[#9ca3af] mb-2">Selected</p>
+        <div className="bg-white border-r-4 border-[#2876d3] rounded-[6px] px-4 pt-4 pb-4 flex flex-col gap-2 shadow-sm">
+          <p className="text-[17px] font-medium text-[#101828] truncate leading-[27px]">ICU night shift fill rate analysis</p>
+          <p className="text-[15px] text-[#4a5565] leading-[27px]">Based on the data, ICU night shifts have a 68% fill rate...</p>
+          <div className="flex items-center justify-between">
+            <span className="px-2 h-[26px] flex items-center justify-center bg-[#e8f8f5] rounded text-[13px] font-bold text-[#0d9488]">FWP</span>
+            <span className="text-[13px] font-medium text-[#71717a]">1 week ago</span>
+          </div>
         </div>
-        <p className="text-xs text-[#6b7280] truncate">Based on the data, ICU night shifts have a 68% fill rate...</p>
-        <div className="mt-2 flex gap-1"><Pill color="#2876d3">FWP</Pill><span className="px-2 py-0.5 text-[10px] font-bold text-white bg-[#2876d3] rounded">High</span></div>
       </div>
     </div>
   </Section>
@@ -658,9 +676,9 @@ export default function ComponentGallery() {
   </Section>
 
   {/* FilterBar */}
-  <Section id="comp-filterbar" title="FilterBar" description="Horizontal filter with toggle tabs and action buttons. Used on every list page.">
+  <Section id="comp-filterbar" title="FilterBar" description="Filter button with count badge, followed by static category labels with counts. Used on every list page.">
     <div className="p-4 bg-white">
-      <FilterBar filterCount={1} tabs={[{ id: 'jobs', label: 'Jobs', count: 20000, isActive: true }, { id: 'apps', label: 'Applications', count: 80000 }]} />
+      <FilterBar filterCount={1} categories={[{ id: 'jobs', label: 'Jobs', count: 20000 }, { id: 'apps', label: 'Applications', count: 80000 }]} />
     </div>
   </Section>
 
@@ -749,13 +767,12 @@ export default function ComponentGallery() {
 
     {/* Compass AI Drawer */}
     <Section id="composite-compass-drawer" title="Compass AI Drawer" description="Full drawer layout: ChatHistory (left) + Conversation Window (right).">
-      <div className="flex h-[550px]">
-        <div className="w-[280px] shrink-0 border-r border-[#e5e7eb]">
-          <ChatHistory items={[
-            { id: '1', title: 'ICU night shift fill rate analysis', excerpt: 'Based on the data, ICU night shifts have a 68% fill rate...', product: 'MC', productColor: '#7c3aed', timestamp: '1 week ago' },
-            { id: '2', title: 'ICU night shift fill rate analysis', excerpt: 'Based on the data, ICU night shifts have a 68% fill rate...', product: 'FWP', productColor: '#2876d3', timestamp: '1 week ago' },
-          ]} activeItemId="1" />
-        </div>
+      <div className="flex h-[600px]">
+        <ChatHistory items={[
+          { id: '1', title: 'ICU night shift fill rate analysis', excerpt: 'Based on the data, ICU night shifts have a 68% fill rate...', product: 'MC', productColor: '#7c3aed', timestamp: '1 week ago' },
+          { id: '2', title: 'ICU night shift fill rate analysis', excerpt: 'Based on the data, ICU night shifts have a 68% fill rate...', product: 'FWP', productColor: '#2876d3', timestamp: '1 week ago' },
+          { id: '3', title: 'ICU night shift fill rate analysis', excerpt: 'Based on the data, ICU night shifts have a 68% fill rate...', product: 'Talent', productColor: '#059669', timestamp: '1 week ago' },
+        ]} activeItemId="1" />
         <div className="flex-1 flex flex-col bg-white">
           <div className="px-6 py-4 border-b border-[#e5e7eb]"><h3 className="text-base font-semibold text-[#1e293b]">New Chat \u2013 Review Applicant Pipeline</h3></div>
           <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4">

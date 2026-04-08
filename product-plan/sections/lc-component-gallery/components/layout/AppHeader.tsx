@@ -11,7 +11,7 @@
  *
  * Custom LiquidCompass component — NOT shadcn.
  */
-import { ChevronDown, Sparkles, Settings, Search } from 'lucide-react'
+import { ChevronDown, Sparkles, Settings } from 'lucide-react'
 import { LCLogo } from '../icons/LCLogo'
 
 export type AppHeaderVariant =

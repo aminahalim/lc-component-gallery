@@ -56,7 +56,7 @@ export type { AIFollowUpPromptsProps } from './compass-ai/AIFollowUpPrompts'
 
 // === Forms & Feedback ===
 export { FilterBar } from './forms-feedback/FilterBar'
-export type { FilterBarProps, FilterTab, FilterBarAction } from './forms-feedback/FilterBar'
+export type { FilterBarProps, FilterCategory } from './forms-feedback/FilterBar'
 
 export { Badge, Pill } from './forms-feedback/Badge'
 export type { BadgeProps, BadgeVariant } from './forms-feedback/Badge'
